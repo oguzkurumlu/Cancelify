@@ -1,4 +1,4 @@
-# DistributedCancellationToken
+# Cancelify
 
 A lightweight, pluggable distributed cancellation token system for .NET using Redis or RabbitMQ.
 
@@ -16,9 +16,9 @@ A lightweight, pluggable distributed cancellation token system for .NET using Re
 
 > Add project reference or future NuGet package:
 
-bash
-dotnet add package DistributedCancellationToken
-
+```bash
+dotnet add package Cancelify
+```
 
 ---
 
@@ -26,19 +26,19 @@ dotnet add package DistributedCancellationToken
 
 ### Register Redis implementation
 
-csharp
+```csharp
 builder.Services.AddRedisDistCancellationToken("localhost:6379");
-
+```
 
 ### Register RabbitMQ implementation
 
-csharp
+```csharp
 builder.Services.AddRabbitMqDistCancellationToken("amqp://guest:guest@localhost:5672");
-
+```
 
 ### Inject and use
 
-csharp
+```csharp
 public class JobService
 {
     private readonly IDistributedCancellationToken _dct;
@@ -59,19 +59,19 @@ public class JobService
         return _dct.CancelAsync(jobId);
     }
 }
-
+```
 
 ---
 
 ## 🔄 Interfaces
 
-csharp
+```csharp
 public interface IDistributedCancellationToken
 {
     CancellationToken GetToken(string id);
     Task CancelAsync(string id);
 }
-
+```
 
 ---
 

@@ -1,0 +1,63 @@
+﻿using Cancelify.Core;
+using StackExchange.Redis;
+using System.Collections.Concurrent;
+
+namespace Cancelify.Redis
+{
+    public class RedisCancellationToken : IDistributedCancellationToken
+    {
+        private readonly ISubscriber _subscriber;
+        private readonly string _channelPrefix;
+        private readonly ConcurrentDictionary<string, CancellationTokenSource> _tokenSources = new();
+        private readonly ConnectionMultiplexer _redis;
+
+        public RedisCancellationToken(string redisConnectionString, string channelPrefix = "cancel-token:")
+        {
+            _redis = ConnectionMultiplexer.Connect(redisConnectionString);
+            _subscriber = _redis.GetSubscriber();
+            _channelPrefix = channelPrefix;
+
+            _subscriber.Subscribe(
+                new RedisChannel($"{_channelPrefix}*", RedisChannel.PatternMode.Pattern),
+                (channel, message) =>
+                {
+                    string key = channel.ToString().Replace(_channelPrefix, "");
+                    if (_tokenSources.TryRemove(key, out var cts))
+                    {
+                        cts.Cancel();
+                        cts.Dispose();
+                    }
+                });
+        }
+
+        public CancellationToken GetToken(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+
+            return _tokenSources.GetOrAdd(id, _ => new CancellationTokenSource()).Token;
+        }
+
+        public async Task CancelAsync(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+
+            await _subscriber.PublishAsync($"{_channelPrefix}{id}", "cancel");
+        }
+
+        public void Dispose()
+        {
+            foreach (var kv in _tokenSources)
+            {
+                kv.Value.Dispose();
+            }
+
+            _redis.Dispose();
+        }
+    }
+}
