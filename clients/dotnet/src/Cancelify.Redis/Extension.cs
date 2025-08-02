@@ -1,5 +1,6 @@
 ﻿using Cancelify.Core;
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
 using System;
 
 namespace Cancelify.Redis
@@ -13,7 +14,7 @@ namespace Cancelify.Redis
                 throw new ArgumentException("Redis connection string must be provided.");
             }
             services.AddSingleton<IDistributedCancellationToken>(sp =>
-                new RedisCancellationToken(redisConnectionString, channelPrefix));
+                new RedisCancellationToken(new RedisConnectionWrapper(redisConnectionString), channelPrefix));
             return services;
         }
     }

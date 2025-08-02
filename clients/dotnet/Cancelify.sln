@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoConsole2", "demo\DemoCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cancelify.RabbitMq", "src\Cancelify.RabbitMq\Cancelify.RabbitMq.csproj", "{47413A11-4292-44CD-90D9-3F46C283836B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cancelify.Redis.Tests", "test\Cancelify.Redis.Tests\Cancelify.Redis.Tests.csproj", "{C03C6177-0DA5-4EB7-9AA4-1A8EE0BA95C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{47413A11-4292-44CD-90D9-3F46C283836B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47413A11-4292-44CD-90D9-3F46C283836B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47413A11-4292-44CD-90D9-3F46C283836B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C03C6177-0DA5-4EB7-9AA4-1A8EE0BA95C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C03C6177-0DA5-4EB7-9AA4-1A8EE0BA95C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C03C6177-0DA5-4EB7-9AA4-1A8EE0BA95C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C03C6177-0DA5-4EB7-9AA4-1A8EE0BA95C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +61,7 @@ Global
 		{F44F79CB-7327-4F87-8FA8-17F53EE13C72} = {1895ACBA-7AD3-4638-951E-486DD3C507D5}
 		{C1EF9C9F-AC46-4ED3-A883-DDE80E795090} = {1895ACBA-7AD3-4638-951E-486DD3C507D5}
 		{47413A11-4292-44CD-90D9-3F46C283836B} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{C03C6177-0DA5-4EB7-9AA4-1A8EE0BA95C7} = {B2A88E53-5609-4931-96BF-98CCD860AFE7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2EDC2BE8-A6AA-41EB-8649-2089F52A0130}

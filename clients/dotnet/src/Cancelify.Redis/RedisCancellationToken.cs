@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace Cancelify.Redis
 {
-    public class RedisCancellationToken : IDistributedCancellationToken
+    public class RedisCancellationToken : IDistributedCancellationToken, IDisposable
     {
         private readonly ISubscriber _subscriber;
         private readonly string _channelPrefix;
         private readonly ConcurrentDictionary<string, CancellationTokenSource> _tokenSources = new ConcurrentDictionary<string, CancellationTokenSource>();
-        private readonly ConnectionMultiplexer _redis;
+        private readonly IRedisConnection _redis;
 
-        public RedisCancellationToken(string redisConnectionString, string channelPrefix = "cancel-token:")
+        public RedisCancellationToken(IRedisConnection redis, string channelPrefix = "cancel-token:")
         {
-            _redis = ConnectionMultiplexer.Connect(redisConnectionString);
+            _redis = redis ?? throw new ArgumentNullException(nameof(redis));
             _subscriber = _redis.GetSubscriber();
             _channelPrefix = channelPrefix;
 
@@ -63,4 +63,5 @@ namespace Cancelify.Redis
             _redis.Dispose();
         }
     }
+
 }

@@ -13,7 +13,7 @@ namespace Cancelify.Redis
                 throw new ArgumentException("Redis connection string must be provided.");
             }
             services.AddSingleton<IDistributedCancellationToken>(sp =>
-                new RabbitMqCancellationToken(rabbitMqUri, channelPrefix));
+                new RabbitMqCancellationToken(new DefaultRabbitMqConnectionFactory(rabbitMqUri), channelPrefix));
 
             return services;
         }

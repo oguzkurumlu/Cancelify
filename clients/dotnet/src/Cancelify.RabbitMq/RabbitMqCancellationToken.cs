@@ -14,21 +14,9 @@ namespace Cancelify.RabbitMq
         private readonly string _queueName;
         private readonly ConcurrentDictionary<string, CancellationTokenSource> _tokenSources = new();
 
-        public RabbitMqCancellationToken(string rabbitMqUri, string exchangeName = "cancel-token")
+        public RabbitMqCancellationToken(IRabbitMqConnectionFactory factory, string exchangeName = "cancel-token")
         {
-            if (string.IsNullOrWhiteSpace(rabbitMqUri))
-            {
-                throw new ArgumentNullException(nameof(rabbitMqUri));
-            }
-
             _exchangeName = exchangeName;
-
-            var factory = new ConnectionFactory
-            {
-                Uri = new Uri(rabbitMqUri),
-                DispatchConsumersAsync = true,
-                AutomaticRecoveryEnabled = true,
-            };
 
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
@@ -41,7 +29,7 @@ namespace Cancelify.RabbitMq
             var consumer = new AsyncEventingBasicConsumer(_channel);
             consumer.Received += OnMessageReceived;
 
-            _channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
+            _channel.BasicConsume(queue: _queueName, autoAck: true, (IBasicConsumer)consumer);
         }
 
         private Task OnMessageReceived(object sender, BasicDeliverEventArgs args)
