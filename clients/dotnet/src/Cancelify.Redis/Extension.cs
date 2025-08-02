@@ -1,5 +1,6 @@
 ﻿using Cancelify.Core;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Cancelify.Redis
 {

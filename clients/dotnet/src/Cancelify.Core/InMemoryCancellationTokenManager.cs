@@ -1,10 +1,12 @@
 ﻿using System.Collections.Concurrent;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Cancelify.Core
 {
     public class InMemoryCancellationTokenManager : IDistributedCancellationToken
     {
-        private readonly ConcurrentDictionary<string, CancellationTokenSource> _tokenSources = new();
+        private readonly ConcurrentDictionary<string, CancellationTokenSource> _tokenSources = new ConcurrentDictionary<string, CancellationTokenSource>();
 
         public CancellationToken GetToken(string id)
         {

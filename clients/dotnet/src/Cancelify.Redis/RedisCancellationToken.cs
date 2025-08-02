@@ -1,6 +1,9 @@
 ﻿using Cancelify.Core;
 using StackExchange.Redis;
+using System;
 using System.Collections.Concurrent;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Cancelify.Redis
 {
@@ -8,7 +11,7 @@ namespace Cancelify.Redis
     {
         private readonly ISubscriber _subscriber;
         private readonly string _channelPrefix;
-        private readonly ConcurrentDictionary<string, CancellationTokenSource> _tokenSources = new();
+        private readonly ConcurrentDictionary<string, CancellationTokenSource> _tokenSources = new ConcurrentDictionary<string, CancellationTokenSource>();
         private readonly ConnectionMultiplexer _redis;
 
         public RedisCancellationToken(string redisConnectionString, string channelPrefix = "cancel-token:")

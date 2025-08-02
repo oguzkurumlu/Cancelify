@@ -1,4 +1,7 @@
-﻿namespace Cancelify.Core
+﻿using System.Threading;
+using System.Threading.Tasks;
+
+namespace Cancelify.Core
 {
     public interface IDistributedCancellationToken
     {
